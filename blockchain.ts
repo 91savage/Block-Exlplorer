@@ -44,3 +44,21 @@ const generateNextBlock = (blockData: string) => {
 // Class Block 의 요소들로 hash 값을 계산하는 과정 ㅎ
 const calculateHash = (index: number, previousHash: string, timestamp: number, data: string): string =>
     CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
+
+
+
+    // 새로운 블록의 유효성 판단하는 과정ㅎ
+const isValidNewBlock = (newBlock: Block,previousBlock: Block) => {
+    if (previousBlock.index+1 !== newBlock.index) {
+        console.log('invalid index');
+        return false;
+    } else if (previousBlock.hash !== newBlock.previousHash) {
+        console.log('invalid previoushash');
+        return false;
+    } else if (calculateHashForBlock(newBlock) !== newBlock.hash) {
+        console.log(typeof (newBlock.hash)+ ' ' + typeof calculateHashForBlock(newBlock));
+        console.log('invalid hash: ' + calculateHashForBlock(newBlock) + ' ' + newBlock.hash);
+        return false;
+    }
+    return true;
+};
